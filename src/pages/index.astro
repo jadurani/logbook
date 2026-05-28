@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <header class="px-6 py-4 flex justify-between items-center border-b border-surface">
+    <span class="text-accent-mid font-serif text-lg tracking-wide">logbook</span>
+    <button
+      id="theme-toggle"
+      class="text-muted hover:text-ink text-sm transition-colors cursor-pointer"
+      aria-label="Toggle theme"
+    >
+      <span data-theme-icon>◑</span>
+    </button>
+  </header>
+
+  <main class="flex flex-col items-center justify-center min-h-[calc(100vh-57px)] px-6 text-center gap-6">
+    <p class="text-accent-mid font-serif text-xs tracking-widest uppercase">photic zone</p>
+    <h1 class="text-ink text-5xl font-serif"><!-- Rani writes this --></h1>
+    <p class="text-muted text-lg max-w-md leading-relaxed"><!-- Rani writes this --></p>
+  </main>
+</Layout>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  btn?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>
