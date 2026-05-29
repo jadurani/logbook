@@ -6,7 +6,7 @@
 
 **Architecture:** Astro 6 Content Layer API (`src/content.config.ts` with glob loader) for type-safe MDX posts. Components are small and single-purpose — ZoneTag, PostCard, PostListItem, Nav. Pages compose them. SEO meta tags live in Layout.astro.
 
-**Tech Stack:** Astro 6, Tailwind v4, `@astrojs/mdx`, `@astrojs/sitemap`, TypeScript strict
+**Tech Stack:** Astro 6, Tailwind v4, `@tailwindcss/typography`, `@astrojs/mdx`, `@astrojs/sitemap`, TypeScript strict
 
 ---
 
@@ -45,13 +45,13 @@ Expected: `Switched to a new branch 'feat/writing-section'`
 
 ## Task 2: Install MDX and sitemap integrations
 
-- [ ] **Install integrations**
+- [ ] **Install integrations and typography plugin**
 
 ```bash
-npx astro add mdx --yes && npx astro add sitemap --yes
+npx astro add mdx --yes && npx astro add sitemap --yes && npm install @tailwindcss/typography
 ```
 
-Expected: Both integrations added, `astro.config.mjs` updated, packages installed.
+Expected: integrations added, packages installed.
 
 - [ ] **Verify `astro.config.mjs` looks like this (fix manually if auto-update missed anything)**
 
@@ -86,6 +86,7 @@ git commit -m "add mdx and sitemap integrations"
 
 ```css
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-canvas: var(--canvas);
@@ -130,11 +131,15 @@ git commit -m "add mdx and sitemap integrations"
   --zone-abyssal: #4ade80;
 }
 
-/* Zone tag glow — can't be done with Tailwind utilities alone */
-.zone-tag {
+/*
+  Zone tag glow uses text-shadow, which has no Tailwind utility.
+  Defined as @utility so they participate in Tailwind's system.
+*/
+@utility zone-tag {
   display: inline-block;
   font-size: 0.5625rem;
-  border: 1px solid;
+  border-width: 1px;
+  border-style: solid;
   border-radius: 3px;
   padding: 1px 5px;
   letter-spacing: 0.08em;
@@ -142,59 +147,28 @@ git commit -m "add mdx and sitemap integrations"
   line-height: 1.6;
 }
 
-.zone-tag--photic {
+@utility zone-tag--photic {
   color: var(--zone-photic);
   border-color: var(--zone-photic);
   text-shadow: 0 0 6px var(--zone-photic);
 }
 
-.zone-tag--aphotic {
+@utility zone-tag--aphotic {
   color: var(--zone-aphotic);
   border-color: var(--zone-aphotic);
   text-shadow: 0 0 6px var(--zone-aphotic);
 }
 
-.zone-tag--abyssal {
+@utility zone-tag--abyssal {
   color: var(--zone-abyssal);
   border-color: var(--zone-abyssal);
   text-shadow: 0 0 6px var(--zone-abyssal);
 }
 
 /* Zone gradient fallbacks for cards without a cover image */
-.zone-gradient--photic  { background: linear-gradient(135deg, #1c1500 0%, #2e2200 100%); }
-.zone-gradient--aphotic { background: linear-gradient(135deg, #200020 0%, #380038 100%); }
-.zone-gradient--abyssal { background: linear-gradient(135deg, #001a0a 0%, #003015 100%); }
-
-/* MDX prose styles */
-.prose-logbook {
-  color: var(--ink);
-  line-height: 1.75;
-  font-size: 1rem;
-}
-.prose-logbook p { margin-bottom: 1.25rem; }
-.prose-logbook h2 { font-family: 'Lora', serif; color: var(--ink); font-size: 1.5rem; margin: 2rem 0 0.75rem; }
-.prose-logbook h3 { font-family: 'Lora', serif; color: var(--ink); font-size: 1.25rem; margin: 1.75rem 0 0.5rem; }
-.prose-logbook a { color: var(--accent-mid); text-decoration: underline; }
-.prose-logbook blockquote {
-  font-family: 'Lora', serif;
-  color: var(--accent-mid);
-  font-style: italic;
-  border-left: 2px solid var(--accent-mid);
-  padding-left: 1rem;
-  margin: 1.5rem 0;
-}
-.prose-logbook img { width: 100%; border-radius: 6px; margin: 1.5rem 0; }
-.prose-logbook ul, .prose-logbook ol { padding-left: 1.5rem; margin-bottom: 1.25rem; }
-.prose-logbook li { margin-bottom: 0.25rem; }
-.prose-logbook code {
-  background: var(--surface);
-  color: var(--accent-mid);
-  padding: 0.1em 0.3em;
-  border-radius: 3px;
-  font-size: 0.875em;
-}
-.prose-logbook pre { background: var(--surface); padding: 1rem; border-radius: 6px; overflow-x: auto; margin: 1.5rem 0; }
-.prose-logbook pre code { background: none; padding: 0; color: var(--ink); font-size: 0.875rem; }
+@utility zone-gradient--photic  { background: linear-gradient(135deg, #1c1500 0%, #2e2200 100%); }
+@utility zone-gradient--aphotic { background: linear-gradient(135deg, #200020 0%, #380038 100%); }
+@utility zone-gradient--abyssal { background: linear-gradient(135deg, #001a0a 0%, #003015 100%); }
 ```
 
 - [ ] **Verify dev server still starts without errors**
@@ -648,7 +622,12 @@ const formattedDate = date.toLocaleDateString('en-US', {
       <span class="text-muted text-xs">· {formattedDate}</span>
     </div>
     <h1 class="text-ink text-3xl font-serif mb-8 leading-tight">{title}</h1>
-    <div class="prose-logbook">
+    <div class="prose prose-invert max-w-none
+                prose-headings:font-serif prose-headings:text-ink
+                prose-a:text-accent-mid
+                prose-blockquote:font-serif prose-blockquote:text-accent-mid prose-blockquote:border-accent-mid
+                prose-code:bg-surface prose-code:text-accent-mid prose-code:rounded
+                prose-pre:bg-surface prose-img:rounded-md">
       <Content />
     </div>
 
