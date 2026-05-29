@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import ZoneTag from '../../components/ZoneTag.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { title, date, zone, category, cover, description } = post.data;
+const { Content } = await render(post);
+const formattedDate = date.toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+});
+---
+
+<Layout title={`${title} — logbook`} description={description} ogImage={cover}>
+  <Nav />
+
+  {cover && (
+    <div class="w-full">
+      <img src={cover} alt={title} class="w-full max-h-96 object-cover" />
+    </div>
+  )}
+
+  <main class="max-w-2xl mx-auto px-6 py-12">
+    <div class="flex items-center gap-2 mb-4 flex-wrap">
+      <ZoneTag zone={zone} />
+      <span class="text-muted text-xs">{category}</span>
+      <span class="text-muted text-xs">· {formattedDate}</span>
+    </div>
+    <h1 class="text-ink text-3xl font-serif mb-8 leading-tight">{title}</h1>
+    <div class="prose prose-invert max-w-none
+                prose-headings:font-serif prose-headings:text-ink
+                prose-a:text-accent-mid
+                prose-blockquote:font-serif prose-blockquote:text-accent-mid prose-blockquote:border-accent-mid
+                prose-code:bg-surface prose-code:text-accent-mid prose-code:rounded
+                prose-pre:bg-surface prose-img:rounded-md">
+      <Content />
+    </div>
+
+    <!-- Giscus comments placeholder — configure once Giscus repo is set up -->
+    {/* <script src="https://giscus.app/client.js" ... async></script> */}
+  </main>
+</Layout>
