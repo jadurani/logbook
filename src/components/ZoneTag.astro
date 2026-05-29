@@ -1,0 +1,7 @@
+---
+interface Props {
+  zone: 'photic' | 'aphotic' | 'abyssal';
+}
+const { zone } = Astro.props;
+---
+<span class={`zone-tag zone-tag--${zone}`}>{zone}</span>
