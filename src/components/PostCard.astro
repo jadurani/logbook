@@ -15,7 +15,7 @@ const formattedDate = date.toLocaleDateString('en-US', { month: 'short', year: '
   class="block bg-surface border border-surface rounded-lg overflow-hidden hover:border-accent-mid transition-colors group"
 >
   {cover ? (
-    <img src={cover} alt={title} class="w-full h-40 object-cover" />
+    <img src={cover} alt={title} class="w-full h-40 object-cover" loading="lazy" />
   ) : (
     <div class={`w-full h-40 zone-gradient--${zone}`}></div>
   )}

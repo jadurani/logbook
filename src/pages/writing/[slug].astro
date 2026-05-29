@@ -22,7 +22,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
 });
 ---
 
-<Layout title={`${title} — logbook`} description={description} ogImage={cover}>
+<Layout title={`${title} — logbook`} description={description} ogImage={cover} ogType="article">
   <Nav />
 
   {cover && (
@@ -38,11 +38,10 @@ const formattedDate = date.toLocaleDateString('en-US', {
       <span class="text-muted text-xs">· {formattedDate}</span>
     </div>
     <h1 class="text-ink text-3xl font-serif mb-8 leading-tight">{title}</h1>
-    <div class="prose prose-invert max-w-none
+    <div class="prose prose-invert max-w-none prose-logbook
                 prose-headings:font-serif prose-headings:text-ink
                 prose-a:text-accent-mid
                 prose-blockquote:font-serif prose-blockquote:text-accent-mid prose-blockquote:border-accent-mid
-                prose-code:bg-surface prose-code:text-accent-mid prose-code:rounded
                 prose-pre:bg-surface prose-img:rounded-md">
       <Content />
     </div>

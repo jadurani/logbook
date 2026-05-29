@@ -82,3 +82,14 @@
 @utility zone-gradient--photic  { background: linear-gradient(135deg, #1c1500 0%, #2e2200 100%); }
 @utility zone-gradient--aphotic { background: linear-gradient(135deg, #200020 0%, #380038 100%); }
 @utility zone-gradient--abyssal { background: linear-gradient(135deg, #001a0a 0%, #003015 100%); }
+
+/* Inline code styling — scoped to not affect pre > code */
+@utility prose-logbook {
+  :where(code):not(:where(pre *)) {
+    background: var(--surface);
+    color: var(--accent-mid);
+    border-radius: 3px;
+    padding: 0.1em 0.3em;
+    font-size: 0.875em;
+  }
+}

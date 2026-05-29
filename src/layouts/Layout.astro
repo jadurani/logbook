@@ -5,12 +5,14 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  ogType?: string;
 }
 
 const {
   title = 'logbook',
   description = "rani's logbook — trying things, keeping track",
   ogImage,
+  ogType = 'website',
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://rani.ph');
@@ -27,7 +29,7 @@ const ogImageURL = ogImage ? new URL(ogImage, Astro.site ?? 'https://rani.ph').t
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
