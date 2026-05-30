@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   --color-canvas: var(--canvas);
@@ -15,13 +16,17 @@
 
 :root,
 [data-theme="dark"] {
-  --canvas: #0f0e13;
-  --surface: #1a1925;
+  --canvas: #080812;
+  --surface: #10101e;
   --ink: #f0eee9;
-  --muted: #9d9baa;
+  --muted: #7a7890;
   --accent: #534AB7;
   --accent-mid: #AFA9EC;
   --accent-soft: #EEEDFE;
+
+  --zone-photic: #fde047;
+  --zone-aphotic: #e879f9;
+  --zone-abyssal: #4ade80;
 }
 
 [data-theme="light"] {
@@ -32,4 +37,59 @@
   --accent: #534AB7;
   --accent-mid: #534AB7;
   --accent-soft: #EEEDFE;
+
+  /* light mode zone values — deferred, using dark values as placeholder */
+  --zone-photic: #fde047;
+  --zone-aphotic: #e879f9;
+  --zone-abyssal: #4ade80;
+}
+
+/*
+  Zone tag glow uses text-shadow, which has no Tailwind utility.
+  Defined as @utility so they participate in Tailwind's system.
+*/
+@utility zone-tag {
+  display: inline-block;
+  font-size: 0.5625rem;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 3px;
+  padding: 1px 5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+@utility zone-tag--photic {
+  color: var(--zone-photic);
+  border-color: var(--zone-photic);
+  text-shadow: 0 0 6px var(--zone-photic);
+}
+
+@utility zone-tag--aphotic {
+  color: var(--zone-aphotic);
+  border-color: var(--zone-aphotic);
+  text-shadow: 0 0 6px var(--zone-aphotic);
+}
+
+@utility zone-tag--abyssal {
+  color: var(--zone-abyssal);
+  border-color: var(--zone-abyssal);
+  text-shadow: 0 0 6px var(--zone-abyssal);
+}
+
+/* Zone gradient fallbacks for cards without a cover image */
+@utility zone-gradient--photic  { background: linear-gradient(135deg, #1c1500 0%, #2e2200 100%); }
+@utility zone-gradient--aphotic { background: linear-gradient(135deg, #200020 0%, #380038 100%); }
+@utility zone-gradient--abyssal { background: linear-gradient(135deg, #001a0a 0%, #003015 100%); }
+
+/* Inline code styling — scoped to not affect pre > code */
+@utility prose-logbook {
+  :where(code):not(:where(pre *)) {
+    background: var(--surface);
+    color: var(--accent-mid);
+    border-radius: 3px;
+    padding: 0.1em 0.3em;
+    font-size: 0.875em;
+  }
 }

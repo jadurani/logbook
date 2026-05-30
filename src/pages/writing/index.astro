@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Nav from '../../components/Nav.astro';
+import PostCard from '../../components/PostCard.astro';
+import PostListItem from '../../components/PostListItem.astro';
+
+const allPosts = await getCollection('posts', ({ data }) => !data.draft);
+const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const featured = sorted.slice(0, 3);
+---
+
+<Layout
+  title="writing — logbook"
+  description="Things I write about diving, mountains, travel, tech, and people."
+>
+  <Nav />
+  <main class="max-w-2xl mx-auto px-6 py-12">
+    {featured.length > 0 && (
+      <>
+        <p class="text-muted text-xs uppercase tracking-widest mb-4">latest</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+          {featured.map(post => <PostCard post={post} />)}
+        </div>
+        <hr class="border-t border-surface mb-8" />
+      </>
+    )}
+    <p class="text-muted text-xs uppercase tracking-widest mb-4">all posts</p>
+    <div>
+      {sorted.map(post => <PostListItem post={post} />)}
+    </div>
+  </main>
+</Layout>
