@@ -10,7 +10,7 @@ export default config({
       format: { contentField: 'content' },
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
-        date: fields.date({ label: 'Date' }),
+        date: fields.date({ label: 'Date', defaultValue: { kind: 'today' } }),
         zone: fields.select({
           label: 'Zone',
           options: [
