@@ -1,4 +1,5 @@
 import { config, collection, fields } from '@keystatic/core';
+import { wrapper } from '@keystatic/core/content-components';
 
 export default config({
   storage: { kind: 'local' },
@@ -39,7 +40,31 @@ export default config({
           publicPath: '/images/',
         }),
         draft: fields.checkbox({ label: 'Draft', defaultValue: false }),
-        content: fields.mdx({ label: 'Content' }),
+        content: fields.mdx({
+          label: 'Content',
+          components: {
+            PullQuote: wrapper({
+              label: 'Pull Quote',
+              description: 'A highlighted quote pulled from the text — rendered in Lora serif',
+              schema: {},
+            }),
+            Callout: wrapper({
+              label: 'Callout',
+              description: 'A note, tip, or warning box',
+              schema: {
+                type: fields.select({
+                  label: 'Type',
+                  options: [
+                    { label: 'Note', value: 'note' },
+                    { label: 'Tip', value: 'tip' },
+                    { label: 'Warning', value: 'warning' },
+                  ],
+                  defaultValue: 'note',
+                }),
+              },
+            }),
+          },
+        }),
       },
     }),
   },
