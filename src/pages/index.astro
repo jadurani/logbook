@@ -1,19 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
 ---
 
 <Layout>
-  <header class="px-6 py-4 flex justify-between items-center border-b border-surface">
-    <span class="text-accent-mid font-serif text-lg tracking-wide">logbook</span>
-    <button
-      id="theme-toggle"
-      class="text-muted hover:text-ink text-sm transition-colors cursor-pointer"
-      aria-label="Toggle theme"
-    >
-      <span data-theme-icon>◑</span>
-    </button>
-  </header>
-
+  <Nav />
   <main class="max-w-xl mx-auto px-6 py-20 flex flex-col gap-6">
     <h1 class="text-ink text-3xl font-serif">hi, i'm rani</h1>
     <p class="text-ink text-lg leading-relaxed">
@@ -27,13 +18,3 @@ import Layout from '../layouts/Layout.astro';
     </p>
   </main>
 </Layout>
-
-<script>
-  const btn = document.getElementById('theme-toggle');
-  btn?.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  });
-</script>

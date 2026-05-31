@@ -1,0 +1,22 @@
+<header class="px-6 py-4 flex justify-between items-center border-b border-surface">
+  <a href="/" class="text-accent-mid font-serif text-lg tracking-wide hover:text-ink transition-colors">
+    logbook
+  </a>
+  <button
+    id="theme-toggle"
+    class="text-muted hover:text-ink text-sm transition-colors cursor-pointer"
+    aria-label="Toggle theme"
+  >
+    <span data-theme-icon>◑</span>
+  </button>
+</header>
+
+<script>
+  const btn = document.getElementById('theme-toggle');
+  btn?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  });
+</script>
