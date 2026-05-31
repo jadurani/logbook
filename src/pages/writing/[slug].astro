@@ -3,9 +3,13 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Nav from '../../components/Nav.astro';
 import ZoneTag from '../../components/ZoneTag.astro';
+import Callout from '../../components/Callout.astro';
+import PullQuote from '../../components/PullQuote.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  const posts = await getCollection('posts', ({ data }) =>
+    import.meta.env.DEV || !data.draft
+  );
   return posts.map(post => ({
     params: { slug: post.id },
     props: { post },
@@ -43,7 +47,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
                 prose-a:text-accent-mid
                 prose-blockquote:font-serif prose-blockquote:text-accent-mid prose-blockquote:border-accent-mid
                 prose-pre:bg-surface prose-img:rounded-md">
-      <Content />
+      <Content components={{ Callout, PullQuote }} />
     </div>
 
     <!-- Giscus comments placeholder — configure once Giscus repo is set up -->
